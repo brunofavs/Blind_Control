@@ -3,6 +3,10 @@
 #include <math.h>
 #include "measure_sensor.h"
 
+#include <WiFi.h>
+#include <WebServer.h>
+
+
 #define aht10_i2c_adress 0x38
 #define aht10_init_adress 0b011100001
 #define ah10_trigger_measure 0b10101100
@@ -12,8 +16,6 @@ int blinds_down_pin_input = 27;
 
 int blinds_up_pin_output = 17;
 int blinds_down_pin_output = 16;
-
-void Read_I2C(unsigned char I2Caddress, unsigned char memmory_adress);
 
 void relayModuleControl();
 
@@ -44,9 +46,11 @@ void loop() {
 
   float temperature = getTemperature();
   float humidity = getHumidity();
+  relayModuleControl();
 
-  Serial.printf("Temperature is \t\t%f\n",temperature);
-  Serial.printf("Relative humidity is \t%f%% \n",humidity);
+
+  // Serial.printf("Temperature is \t\t%f\n",temperature);
+  // Serial.printf("Relative humidity is \t%f%% \n",humidity);
   delay(1000);
 
 }
@@ -71,7 +75,6 @@ void relayModuleControl(){
 
   Serial.printf("Up status is %d\n",up_status);
   Serial.printf("Down status is %d\n",down_status);
-  delay(100);
 }
 
 
