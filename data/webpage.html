@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP32 Webpage</title>
+</head>
+<body>
+  <h1>ESP32 Webpage</h1>
+  
+  <p>Variable 1: <span id="var1">0</span></p>
+  <p>Variable 2: <span id="var2">0</span></p>
+  <br>
+  <button onclick="sendData('action1')">Action 1</button>
+  <button onclick="sendData('action2')">Action 2</button>
+  
+  <script>
+    // Use JavaScript to fetch data from the ESP32 and update the webpage
+    function updateData() {
+      fetch('/data')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('var1').innerHTML = data.var1;
+          document.getElementById('var2').innerHTML = data.var2;
+        });
+    }
+    
+    // Use JavaScript to send data to the ESP32
+    function sendData(action) {
+      fetch('/action', {
+        method: 'POST',
+        body: JSON.stringify({action: action}),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    }
+    
+    // Call the updateData function every 1000 milliseconds
+    setInterval(updateData, 1000);
+  </script>
+</body>
+</html>
